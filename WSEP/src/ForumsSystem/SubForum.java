@@ -7,7 +7,7 @@ public class SubForum {
 	private int subForumId;
 	private String name;
 	private Vector<Moderator> subForumModerators;
-	private Vector<Thread> subForumThreads;
+	private Vector<Discussion> subForumDiscussions;
 	private Forum forum;
 	
 	
@@ -17,7 +17,8 @@ public class SubForum {
 		this.name = name;
 		this.forum = forum;
 		subForumModerators = new Vector<Moderator>();
-		subForumThreads = new Vector<Thread>();
+		subForumDiscussions = new Vector<Discussion>();
+		forum.addSubForum(this);
 	}
 
 	public String getName() {
@@ -59,19 +60,19 @@ public class SubForum {
 	}
 
 
-	public Vector<Thread> getSubForumThreads() {
-		return subForumThreads;
+	public Vector<Discussion> getSubForumDiscussion() {
+		return subForumDiscussions;
 	}
 
 
-	public void addSubForumThread(Thread thread) {
-		subForumThreads.addElement(thread);
+	public void addSubForumDiscussion(Discussion discussion) {
+		subForumDiscussions.addElement(discussion);
 	}
 	
-	public void removeSubForumThread(Thread thread) {
-		for (int i=0; i<subForumThreads.size(); i++) 
-			if (subForumThreads.elementAt(i).equals(thread))
-				subForumThreads.removeElementAt(i);
+	public void removeSubForumDiscussion(Discussion discussion) {
+		for (int i=0; i<subForumDiscussions.size(); i++) 
+			if (subForumDiscussions.elementAt(i).equals(discussion))
+				subForumDiscussions.removeElementAt(i);
 	}
 	
 	public void removeSubForumModerator(Moderator moderator) {

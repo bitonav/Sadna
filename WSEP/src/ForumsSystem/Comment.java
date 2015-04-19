@@ -7,17 +7,19 @@ import java.util.Vector;
 public class Comment {
 	
 	private int userId;
-	private int threadId;
+	private int commentId;
+	private int discussionId;
 	private String title;
 	private String content;
 	private String publishDate;
 	private Comment referredToComment;
 	private Vector<Comment> repliedCommentsVec;
 	
-	public Comment(int threadId, String title, String content, Comment referredToComment) {
-		this.setUserId(Control.globalID);
+	public Comment(int userId, int discussionId, String title, String content, Comment referredToComment) {
+		this.userId = userId; 
+		this.setCommentId(Control.globalID);
 		Control.globalID++;
-		this.threadId = threadId;
+		this.discussionId = discussionId;
 		this.setTitle(title);
 		this.setContent(content);
 				
@@ -27,9 +29,13 @@ public class Comment {
 		this.setPublishDate(dateFormat.format(date));
 				
 		this.setReferredToComment(referredToComment);
-		this.setRepliedCommentsVec(new Vector<Comment>());
+		this.repliedCommentsVec = new Vector<Comment>();
 	}
 	
+	private void setCommentId(int globalID) {
+		commentId = globalID;
+	}
+
 	// Copy constructor
 	public Comment(Comment other) {
 		this.userId = other.getUserId();
@@ -41,10 +47,6 @@ public class Comment {
 
 	public int getUserId() {
 		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public String getTitle() {
@@ -83,16 +85,19 @@ public class Comment {
 		return repliedCommentsVec;
 	}
 
-	public void setRepliedCommentsVec(Vector<Comment> repliedCommentsVec) {
-		this.repliedCommentsVec = repliedCommentsVec;
+	public void addCommentToRepliedComments(Comment repliedComment) {
+		this.repliedCommentsVec.add(repliedComment);
 	}
 	
 	public void deleteComment() {
 		// Remove Comment + related comments in the GUI.
 	}
 
-	public int getThreadId() {
-		return threadId;
+	public int getDiscussionId() {
+		return discussionId;
 	}
-
+	
+	public int getCommentId() {
+		return commentId;
+	}
 }
