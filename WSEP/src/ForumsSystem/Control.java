@@ -1,5 +1,3 @@
-
-
 package ForumsSystem;
 
 import java.io.IOException;
@@ -32,14 +30,14 @@ public class Control {
 	/************************************************************************/
 
 	public static int globalID = 0; // unique ID's to users, forums, etc.
-	private HashSet<String> f_LoggedInMembers;
-	private HashMap<Integer, SignedMember> f_ForumMembers; // Integer represents 'userID'
-	private HashMap<Integer, Forum> f_Forums; // Integer represents 'forumID'
-	private HashMap<Integer, Guest> f_Guests; // Integer represents 'userID'
+	private HashSet<String> _LoggedInMembers;
+	private HashMap<Integer, SignedMember> _ForumMembers; // Integer represents 'userID'
+	private HashMap<Integer, Forum> _Forums; // Integer represents 'forumID'
+	private HashMap<Integer, Guest> _Guests; // Integer represents 'userID'
 	public void Initialization(){
-		f_LoggedInMembers = new HashSet<String>(); // HashSet of all logged in members
-		f_ForumMembers = new HashMap<Integer, SignedMember>(); // HashMap of all members
-		f_Forums = new HashMap<Integer, Forum>(); // HashMap of all forums
+		_LoggedInMembers = new HashSet<String>(); // HashSet of all logged in members
+		_ForumMembers = new HashMap<Integer, SignedMember>(); // HashMap of all members
+		_Forums = new HashMap<Integer, Forum>(); // HashMap of all forums
 		/*
 		 * Here we extract all information from the DB
 		 */
@@ -59,7 +57,7 @@ public class Control {
 	 * This function gets username and adds it to the data structure of the signed in members
 	 */
 	public void loginUser(String username){
-		f_LoggedInMembers.add(username);
+		_LoggedInMembers.add(username);
 		// TODO maybe changed to DB
 	} // loginUser
 
@@ -67,7 +65,7 @@ public class Control {
 	 * This function gets username and adds it to the data structure of the signed in members
 	 */
 	public void logoutUser(String username){
-		f_LoggedInMembers.remove(username);
+		_LoggedInMembers.remove(username);
 		// TODO maybe changed to DB
 	} // logoutUser
 
@@ -86,7 +84,7 @@ public class Control {
 	 * This function gets object of SignedMember and adds its details to the DB
 	 */
 	public void addNewUserToDatabase(SignedMember sm){
-
+		_ForumMembers.put(sm.getUserID(), sm);
 		// take the fields from 'sm' and insert it to the DB
 
 	} // addNewUserToDatabase
@@ -116,7 +114,7 @@ public class Control {
 
 		SMTPAuthenticator auth = new SMTPAuthenticator();
 		Session session = Session.getInstance(props, auth);
-		session.setDebug(true);
+		session.setDebug(false);
 
 		MimeMessage msg = new MimeMessage(session);
 		try {
@@ -148,6 +146,8 @@ public class Control {
 	/*
 	 * This function checks for confirmations of users from e-mail, and confirm those users.
 	 */
+	// TODO at this version there is not matter what is the content of the confirm mail from the user
+	// TODO
 	public void confirmUsersByEmail(){
 		Properties properties = new Properties();
 		properties.setProperty("mail.host", "imap.gmail.com");
@@ -160,13 +160,14 @@ public class Control {
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_WRITE);
 			Message messages[] = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
-			System.out.println("Number of mails = " + messages.length);
+			//System.out.println("Number of mails = " + messages.length);
+			String userEmail=""; // temp variable
 			for (int i = 0; i < messages.length; i++) {
 				Message message = messages[i];
 				message.setFlag(Flags.Flag.SEEN, true);
 				Address[] from = message.getFrom();
-				System.out.println("From : " + from[0]);
-				confirmUser("");
+				userEmail = from[0].toString().substring(from[0].toString().indexOf("<")+1, from[0].toString().length()-1);
+				confirmUser(userEmail);
 			} // for each unseen message
 			inbox.close(true);
 			store.close();
@@ -176,9 +177,14 @@ public class Control {
 			e.printStackTrace();
 		}
 	} // comfirmUsersByEmail
-	
-	private void confirmUser(String eMail){
-		
+
+	private void confirmUser(String eMail){    
+		for (SignedMember currentMember : _ForumMembers.values()) {
+			if(currentMember.getEmail().equals(eMail)){
+				currentMember.confirmUser();
+				break;
+			} // if found
+		} // for each member
 	} // confirmUser
-	
+
 } // Class Control

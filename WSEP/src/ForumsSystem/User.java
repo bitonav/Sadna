@@ -2,11 +2,16 @@ package ForumsSystem;
 
 public abstract class User {
 
-		protected int userId;
+	protected int _userID;
+
+	public User() {
+		_userID = Control.globalID;
+		Control.globalID++;
+	}
 	
-		 public User(int userId) {
-			 this.userId = userId;
-		 }
-		 
-	
+	public int getUserID(){
+		return _userID;
+	} // getUserID
+
+
 }

@@ -2,17 +2,16 @@ package ForumsSystem;
 
 public class Moderator extends SignedMember {
 	
-	public Moderator(int userId) {
-		super(userId);
-
+	public Moderator(String name, String username, String password, String email) {
+		super(name, username, password, email);
 	}
 
 	public boolean equals(Moderator moderator) {
-		return (this.userId == moderator.getUserId());
+		return (this._userID == moderator.getUserId());
 	}
 
 	private int getUserId() {
-		return this.userId;
+		return this._userID;
 	}
 	
 }

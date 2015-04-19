@@ -16,9 +16,41 @@ public class SignedMember extends User {
 	}
 	
 	public void confirmUser(){
-		f_IsConfirmed=true;
+		_IsConfirmed=true;
 	} // confirmUser
+
+	public boolean isConfirmed() {
+		return _IsConfirmed;
+	} // isConfirmed
 	
+	public String getEmail() {
+		return _Email;
+	} // getEmail
+
+	public String getName() {
+		return _Name;
+	}
+
+	public void setName(String _Name) {
+		this._Name = _Name;
+	}
+
+	public String getUsername() {
+		return _Username;
+	}
+
+	public void setUsername(String _Username) {
+		this._Username = _Username;
+	}
+
+	public String getPassword() {
+		return _Password;
+	}
+
+	public void setPassword(String _Password) {
+		this._Password = _Password;
+	}
+
 	public void publishNewDiscussion(String title, String content, SubForum sf){
 		Discussion dis = new Discussion(userId, title, content);
 		sf.addSubForumDiscussion(dis);

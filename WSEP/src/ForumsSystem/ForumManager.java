@@ -7,8 +7,8 @@ public class ForumManager extends Moderator {
 	protected Vector<Forum> _forums;
 	
 	
-	public ForumManager(int userId) {
-		super(userId);
+	public ForumManager(String name, String username, String password, String email) {
+		super(name, username, password, email);
 	}
 	
 	public Vector<Forum> getForums() {
