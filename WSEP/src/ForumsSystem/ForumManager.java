@@ -22,11 +22,11 @@ public class ForumManager extends Moderator {
 	public SubForum createSubForum(String subject, int forumID){
 		for(Forum forum:_forums){
 			if(forum.getForumID() == forumID){
-				Control.actionsLogger.info("User:" + userId + " created new Sub-Forum in Forum: " + forum.getName());
+				Control.actionsLogger.info("User:" + _userID + " created new Sub-Forum in Forum: " + forum.getName());
 				return new SubForum(subject, forum);
 			}
 		}
-		Control.errorsLogger.info("User:" + userId + " Failed to create a new Sub-Forum");
+		Control.errorsLogger.info("User:" + _userID + " Failed to create a new Sub-Forum");
 		return null;
 	}
 

@@ -16,8 +16,6 @@ import java.util.logging.LogManager;
 
 
 public class Control {
-
-
 	public static final Logger actionsLogger = Logger.getLogger(Control.class.getName());
 	public static final Logger errorsLogger = Logger.getLogger(Control.class.getName());
 
