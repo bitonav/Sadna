@@ -9,6 +9,7 @@ public class ForumManager extends Moderator {
 	
 	public ForumManager(String name, String username, String password, String email) {
 		super(name, username, password, email);
+		_forums = new Vector<Forum>();
 	}
 	
 	public Vector<Forum> getForums() {
@@ -22,12 +23,24 @@ public class ForumManager extends Moderator {
 	public SubForum createSubForum(String subject, int forumID){
 		for(Forum forum:_forums){
 			if(forum.getForumID() == forumID){
-				Control.actionsLogger.info("User:" + _userID + " created new Sub-Forum in Forum: " + forum.getName());
+				Control.actionsLogger.info("ForumManager:" + _userID + " created new Sub-Forum in Forum: " + forum.getName());
 				return new SubForum(subject, forum);
 			}
 		}
-		Control.errorsLogger.info("User:" + _userID + " Failed to create a new Sub-Forum");
+		Control.errorsLogger.info("ForumManager:" + _userID + " Failed to create a new Sub-Forum");
 		return null;
+	}
+	
+	public void deleteSubForum(SubForum sf, int forumID){
+		for(Forum forum:_forums){
+			if(forum.getForumID() == forumID){
+				Control.actionsLogger.info("ForumManager: " + _userID + " deleted a Sub-Forum in Forum: " + forum.getName());
+				forum.getForumSubForums().remove(sf);
+				return;
+			}
+		}
+		Control.errorsLogger.info("ForumManager: " + _userID + " Failed to delete a Sub-Forum");
+		return;
 	}
 
 }

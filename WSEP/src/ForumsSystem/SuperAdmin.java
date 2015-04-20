@@ -20,13 +20,14 @@ public class SuperAdmin extends ForumManager {
 			_forums.add(newForum);
 			Control.actionsLogger.info("SuperAdmin: " + _userID + " created new Forum: " + newForum.getName());
 		}
-		Control.errorsLogger.info("SuperAdmin:" + _userID + " Failed to create Forum");	
-
+		else{
+			Control.errorsLogger.info("SuperAdmin:" + _userID + " Failed to create Forum");	
+		}
 	}
 
 	public void removeForum(Forum forumToRemove) {
 		if(_forums.contains(forumToRemove)){
-			Control.actionsLogger.info("SuperAdmin: " + _userID + " deleated Forum: " + forumToRemove.getName());
+			Control.actionsLogger.info("SuperAdmin: " + _userID + " deleted Forum: " + forumToRemove.getName());
 			_forums.remove(forumToRemove);	
 		}
 		else{

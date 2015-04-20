@@ -34,7 +34,11 @@ public class Forum {
 	public Vector<SubForum> getForumSubForums() {
 		return forumSubForums;
 	}
-
+	
+	public void setForumSubForums(Vector<SubForum> subForums) {
+		forumSubForums = subForums;
+	}
+	
 	public void addForumManager(ForumManager fm) {
 		forumManagers.addElement(fm);
 	}

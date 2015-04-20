@@ -18,21 +18,14 @@ public class SuperAdminTester {
 	}
 
 	@Test
-	public void testAddForum() {
+	public void test_Add_Delete_Forum() {
+		assertTrue(admin.getForums().size() == 0);
 		Forum a = new Forum("Football");
 		admin.addForum(a);
 		assertTrue(admin.getForums().contains(a));
 		Forum b = new Forum("Software");
 		admin.addForum(b);
 		assertTrue(admin.getForums().contains(a));
-	}
-
-	@Test
-	public void testRemoveForum() {
-		Forum a = new Forum("Football");
-		admin.addForum(a);
-		Forum b = new Forum("Software");
-		admin.addForum(b);
 		assertTrue(admin.getForums().size() == 2);
 		admin.removeForum(a);
 		admin.removeForum(b);
