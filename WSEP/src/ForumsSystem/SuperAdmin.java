@@ -4,13 +4,23 @@ import java.util.Vector;
 
 public class SuperAdmin extends ForumManager {
 
+	private static SuperAdmin sa = null;
 	private Vector<Forum> _forums;
 
-	public SuperAdmin(String name, String username, String password, String email) {
+	private SuperAdmin(String name, String username, String password, String email) {
 		super(name, username, password, email);
 		_forums =  new Vector<Forum>();
 	}
 
+	public static synchronized void createSuperAdmin(String name, String username, String password, String email) {
+		if(sa == null)
+			sa = new SuperAdmin(name, username, password, email);
+	} // createSuperAdmin
+	
+	public static SuperAdmin getInstance(){
+		return sa;
+	} // getInstance
+	
 	public Vector<Forum> getForums() {
 		return _forums;
 	}
@@ -19,11 +29,23 @@ public class SuperAdmin extends ForumManager {
 		if(!_forums.contains(newForum)){
 			_forums.add(newForum);
 			Control.actionsLogger.info("SuperAdmin: " + _userID + " created new Forum: " + newForum.getName());
-		}
+		} // if
 		else{
 			Control.errorsLogger.info("SuperAdmin:" + _userID + " Failed to create Forum");	
-		}
-	}
+		} // else
+	} // addForum
+	
+	public void addUserRank(String rankName, int minimalSeniority, int minimalLoggedInTime, int minimalPostsLastYear){
+		Control.getInstance().addUserRank(new UserRank(rankName, minimalSeniority, minimalLoggedInTime, minimalPostsLastYear));
+	} // addUserRank
+	
+	public void removeUserRank(String rankName){
+		Control.getInstance().removeUserRank(rankName);
+	} // removeUserRank
+	
+	public int getNumOfUserRanks(){
+		return Control.getInstance().getNumOfUserRanks();
+	} // getNumOfUserRanks
 
 	public void removeForum(Forum forumToRemove) {
 		if(_forums.contains(forumToRemove)){
@@ -32,7 +54,7 @@ public class SuperAdmin extends ForumManager {
 		}
 		else{
 			Control.errorsLogger.info("SuperAdmin:" + _userID + " Failed to Delete Forum");	
-		}
-	}
+		} // else
+	} // removeForum
 
-}
+} // Class SuperAdmin
