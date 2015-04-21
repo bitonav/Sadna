@@ -10,6 +10,7 @@ public class SignedMember extends User {
 	protected String _Email;
 	protected boolean _IsConfirmed;
 	protected Vector<Discussion> _discussions;
+	protected Vector<Comment> _comments;/***********************************/
 	protected int _Seniority;
 	protected int _LoggedInTime;
 	protected int _PostsLastYear;
@@ -25,6 +26,7 @@ public class SignedMember extends User {
 		_Email = email;
 		_IsConfirmed = false;
 		_discussions = new Vector<Discussion>();
+		_comments = new Vector<Comment>(); /***********************************/
 		_Seniority = 0;
 		_LoggedInTime = 0;
 		_PostsLastYear = 0;

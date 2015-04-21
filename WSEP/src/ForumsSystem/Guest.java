@@ -26,7 +26,13 @@ public class Guest extends User{
 	
 	public boolean Login(String username, String password){
 		if(Control.getInstance().userAuthentication(username, password)){
-			Control.getInstance().loginUser(username);
+			if (Control.getInstance().checkIfBanned(username)){ /**********************/
+				/*TODO - BAN MESSAGE */
+				return false;
+			}
+			else{
+				Control.getInstance().loginUser(username);
+			}
 			return true;
 		} // if
 		return false;

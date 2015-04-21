@@ -304,5 +304,14 @@ public class Control {
 		return _ForumMembers.get(friendID);
 		
 	}
+
+	
+	public boolean checkIfBanned(String username) { /******************************/
+		for(SignedMember sm:_BannedForumMembers){
+			if (sm.getUsername().equals(username))
+				return true;
+		}
+		return false;
+	}
 	
 } // Class Control
