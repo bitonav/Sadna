@@ -14,7 +14,8 @@ public class SuperAdminTester {
 	
 	@Before
 	public void initAdmin() {
-		admin = new SuperAdmin("Leo Messi", "TheKing", "penaldo", "leo@adidas.com");
+		SuperAdmin.createSuperAdmin("Leo Messi", "TheKing", "penaldo", "leo@adidas.com");
+		admin = SuperAdmin.getInstance();
 	}
 
 	@Test

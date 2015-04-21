@@ -13,6 +13,9 @@ public class SignedMember extends User {
 	protected int _Seniority;
 	protected int _LoggedInTime;
 	protected int _PostsLastYear;
+	protected UserStatus _status;
+	protected Vector<Integer> _friends;
+	protected Vector<Integer> _pendingRequestsForFriendship;
 	
 	public SignedMember(String name, String username, String password, String email) {
 		super();
@@ -25,6 +28,7 @@ public class SignedMember extends User {
 		_Seniority = 0;
 		_LoggedInTime = 0;
 		_PostsLastYear = 0;
+		_status  = UserStatus.ACTIVE;
 	} // Constructor
 
 	public void confirmUser(){
@@ -105,5 +109,51 @@ public class SignedMember extends User {
 	public void setPostsLastYear(int _PostsLastYear) {
 		this._PostsLastYear = _PostsLastYear;
 	}
+
+	public void changeStatus(UserStatus status) {
+			_status = status;
+	}
+	
+	public void addFriend(int friendID){
+		//check if friendID exist
+		if(Control.getInstance().isUserIDExist(friendID)){
+			//check if not already friends
+			if(!_friends.contains(friendID)){
+				//send friend request
+				sendFriendRequest(friendID);
+				_friends.add(friendID);
+			}
+			else{
+				Control.errorsLogger.info("User:" + _userID + " tried to add as friend user: " + friendID + ", which already his friend.");             
+			}
+		}
+		else{
+			Control.errorsLogger.info("User:" + _userID + " tried to add as friend user: " + friendID + ", which isn't a signed member.");
+		}
+		
+		
+	}
+
+	private void sendFriendRequest(int friendID) {
+		Control.getInstance().getMemberById(friendID).addMemberToPendingRequest(this._userID);
+		
+	}
+
+	private void addMemberToPendingRequest(int userID) {
+		_pendingRequestsForFriendship.add(userID);
+	}
+
+	private void approveFriendRequest(int userID){
+		if(_pendingRequestsForFriendship.contains(userID)){
+			_pendingRequestsForFriendship.remove(userID);
+			_friends.add(userID);
+			Control.getInstance().getMemberById(userID)._friends.add(this._userID);
+		}
+		else{
+			Control.errorsLogger.info("User:" + _userID + " tried to approve as friend user: " + userID + ", which isn't in his pending requests.");
+		}
+	}
+	
+	
 
 }

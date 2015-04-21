@@ -13,8 +13,7 @@ public class ControlTester {
 	Control c;
 
 	public ControlTester(){
-		c = new Control();
-		c.Initialization();
+		c = Control.getInstance();
 	}
 
 	@Test

@@ -1,7 +1,5 @@
 package ForumsSystem;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 import javax.mail.*;
@@ -11,7 +9,6 @@ import javax.mail.search.FlagTerm;
 
 import java.util.HashSet;
 import java.util.logging.Logger;
-import java.util.logging.LogManager;
 
 
 
@@ -34,6 +31,7 @@ public class Control {
 	private HashMap<Integer, Forum> _Forums; // Integer represents 'forumID'
 	private HashMap<Integer, Guest> _Guests; // Integer represents 'userID'
 	private Vector<UserRank> _Ranks; // types of user ranks
+	private Vector<SignedMember> _BannedForumMembers; 
 	
 	private Control(){
 		Initialization();
@@ -48,7 +46,8 @@ public class Control {
 	private  void Initialization(){
 		_LoggedInMembers = new HashSet<String>(); // HashSet of all logged in members
 		_ForumMembers = new HashMap<Integer, SignedMember>(); // HashMap of all members
-		_Forums = new HashMap<Integer, Forum>(); // HashMap of all forums
+		_BannedForumMembers = new Vector<SignedMember>(); // Vector of banned members
+		set_Forums(new HashMap<Integer, Forum>()); // HashMap of all forums
 		_Ranks = new Vector<UserRank>(); // Vector of all forums
 		SuperAdmin.createSuperAdmin("SuperAdmin", "Administrator", "123455", "ran.z36@gmail.com");
 		_Ranks.add(new UserRank("Regular", 0, 0, 0));
@@ -253,5 +252,57 @@ public class Control {
 			} // if found
 		} // for each member
 	} // confirmUser
+
+	public Vector<SignedMember> getBannedForumMembersVec() {
+		return _BannedForumMembers;
+	}
+
+	public void addBanForumMember(SignedMember sm) {
+		if(!_BannedForumMembers.contains(sm)){
+			Control.actionsLogger.info("User: " + sm.getUserID() + " got BAN");
+			_BannedForumMembers.add(sm);	
+		}
+		else{
+			Control.errorsLogger.info("User:" + sm.getUserID() + " is already BANNED");	
+		}
+	}
+	
+	public void removeBanForumMember(SignedMember sm) {
+		if(_BannedForumMembers.contains(sm)){
+			Control.actionsLogger.info("User: " + sm.getUserID() + " not BANNED");
+			_BannedForumMembers.remove(sm);	
+		}
+		else{
+			Control.errorsLogger.info("User:" + sm.getUserID() + " is already Not BANNED");	
+		} 
+	}
+
+	public HashMap<Integer, Forum> get_Forums() {
+		return _Forums;
+	}
+
+	public void set_Forums(HashMap<Integer, Forum> _Forums) {
+		this._Forums = _Forums;
+	}
+
+	public HashMap<Integer, Guest> get_Guests() {
+		return _Guests;
+	}
+
+	public void set_Guests(HashMap<Integer, Guest> _Guests) {
+		this._Guests = _Guests;
+	}
+	
+	/*
+	 * This function gets userID and checks with the DB if the userID exist. 
+	 */
+	public boolean isUserIDExist(int userID){
+		return _ForumMembers.containsKey(userID);
+	} // isUserIDExist
+	
+	public SignedMember getMemberById(int friendID) {
+		return _ForumMembers.get(friendID);
+		
+	}
 	
 } // Class Control

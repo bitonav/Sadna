@@ -7,11 +7,18 @@ public class Moderator extends SignedMember {
 	}
 
 	public boolean equals(Moderator moderator) {
-		return (this._userID == moderator.getUserId());
+		return (this._userID == moderator._userID);
 	}
 
-	private int getUserId() {
-		return this._userID;
+	public void banMember(SignedMember sm){
+		sm.changeStatus(UserStatus.BANNED);
+		Control.getInstance().addBanForumMember(sm);
 	}
+	
+	public void unBanMember(SignedMember sm){
+		sm.changeStatus(UserStatus.ACTIVE);
+		Control.getInstance().removeBanForumMember(sm);
+	}
+	
 	
 }
